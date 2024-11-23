@@ -82,7 +82,7 @@ from the last seven minutes have activity."
   (let
       ((seven-minutes-before-now (- (time-convert nil 'integer) (* 60 7))))
     (setq fl-activity-intervals
-	  (cl-remove-if '(lambda (row) (> seven-minutes-before-now (car row))) fl-activity-intervals))))
+	  (cl-remove-if (lambda (row) (> seven-minutes-before-now (car row))) fl-activity-intervals))))
 
 ;; start recording idle time every ten seconds!
 (fl-write-interval-timer-start)
