@@ -44,9 +44,9 @@
 
 ;; will this break if I type fast enough for (current-idle-time) to return nil ?
 (defun is-active (pair)
-  "Check PAIR, idle values less than 30 seconds counts as active.
+  "Check PAIR, idle values less than 10 seconds counts as active.
 idle returns -1 and active returns 1."
-  (if (< (cdr pair) 30) 1 -1))
+  (if (< (cdr pair) 10) 1 -1)) ;; 10 seconds is the sample time, best to match that?
 
 (defun fl-update-color ()
   "Update the color.
