@@ -41,9 +41,12 @@
 ;; This time runs every thirty seconds and calculates the color to send to the LED
 (defvar fl-update-color-timer-var nil)
 
+
+;; will this break if I type fast enough for (current-idle-time) to return nil ?
 (defun is-active (pair)
-  "Check PAIR to see whether this sample is idle -1 or active 1."
-  (if (cdr pair) 1 -1))
+  "Check PAIR, idle values less than 30 seconds counts as active.
+idle returns -1 and active returns 1."
+  (if (< (cdr pair) 30) 1 -1))
 
 (defun fl-update-color ()
   "Update the color.
@@ -53,6 +56,7 @@ from the last seven minutes have activity."
   (progn
     (fl-prune-activity-intervals) ;; remove old values
     (if
+	;; sum together all the idle and active values, if positive, send RED
 	(> (apply '+ (cl-mapcar 'is-active fl-activity-intervals)) 0)
 	;; send RED for busy
 	(url-retrieve "http://flowlight.local/unsafe?runthis=WygyNTUsMCwwKSBmb3IgaSBpbiByYW5nZSgzMCld" 'message)
